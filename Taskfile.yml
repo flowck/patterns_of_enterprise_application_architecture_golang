@@ -1,0 +1,34 @@
+version: 3
+
+tasks:
+  checks:
+    cmds:
+      - task fmt
+      - task lint:fix
+
+  lint:docker:
+    cmds:
+      - docker run --rm -v $(pwd):/app -w /app golangci/golangci-lint:v1.51.1 golangci-lint run -v
+
+  lint:
+    cmds:
+      - golangci-lint run
+
+  lint:fix:
+    cmds:
+      - golangci-lint run --fix
+
+  fmt:
+    cmds:
+      - gofmt -w -s ./
+
+  wait-for:
+    cmds:
+      - |
+        echo "Waiting service to launch on {{.CLI_ARGS}}..."
+        
+        while ! nc -z localhost {{.CLI_ARGS}}; do
+          sleep 0.1 # wait for 1/10 of the second before check again
+        done
+        
+        echo "Service launched"
