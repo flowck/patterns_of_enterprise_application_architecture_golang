@@ -13,15 +13,3 @@ jobs:
     needs: ci
     secrets:
       PAT: ${{ secrets.PAT }}
-
-  deploy-staging:
-    uses: ./.github/workflows/deploy-staging.yml
-    needs: [ci, tag]
-    with:
-      # Get the output of the tag job
-      version: ${{ needs.tag.outputs.version }}
-
-    # Send repository secrets onto the deploy-staging workflow
-    secrets:
-      PAT: ${{ secrets.PAT }}
-      FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
