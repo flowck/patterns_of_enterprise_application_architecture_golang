@@ -11,6 +11,7 @@ import (
 	"github.com/brianvoe/gofakeit"
 	"github.com/flowck/patterns_of_enterprise_application_architecture_golang/row_data_gateway"
 	_ "github.com/lib/pq"
+	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
 
@@ -20,8 +21,34 @@ var (
 )
 
 func TestPersonGateway_Insert(t *testing.T) {
+	row := fixturePersonGateway()
+	require.Nil(t, row.Insert(ctx, db), "require no error during INSERT")
+}
+
+func TestPersonGateway_Update(t *testing.T) {
+	person := fixturePersonGateway()
+	require.Nil(t, person.Insert(ctx, db))
+
+	row := &row_data_gateway.PersonGateway{
+		Id:                 person.Id,
+		FirstName:          gofakeit.FirstName(),
+		LastName:           gofakeit.LastName(),
+		NumberOfDependents: 4,
+		CreatedAt:          person.CreatedAt,
+		UpdatedAt:          time.Now(),
+	}
+
+	expectedUpdatedRows := 1
+	updatedRows, err := row.Update(ctx, db)
+	require.Nil(t, err)
+
+	assert.Equal(t, expectedUpdatedRows, int(updatedRows))
+	//TODO: improve assertion by querying the newly updated row and the comparing the fields with the row above
+}
+
+func fixturePersonGateway() *row_data_gateway.PersonGateway {
 	createdAtMin := time.Date(2020, 01, 01, 0, 0, 0, 0, time.UTC)
-	row := row_data_gateway.PersonGateway{
+	return &row_data_gateway.PersonGateway{
 		Id:                 gofakeit.UUID(),
 		FirstName:          gofakeit.FirstName(),
 		LastName:           gofakeit.LastName(),
@@ -29,8 +56,6 @@ func TestPersonGateway_Insert(t *testing.T) {
 		CreatedAt:          gofakeit.DateRange(createdAtMin, time.Now()),
 		UpdatedAt:          time.Now(),
 	}
-
-	require.Nil(t, row.Insert(ctx, db), "require no error during INSERT")
 }
 
 func TestMain(m *testing.M) {
