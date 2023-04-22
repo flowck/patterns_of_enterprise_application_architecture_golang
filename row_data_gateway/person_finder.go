@@ -41,7 +41,7 @@ func (p PersonFinder) People(ctx context.Context) ([]*PersonGateway, error) {
 		ctx,
 		`SELECT id, first_name, last_name, number_of_dependents, created_at, updated_at from people`,
 	)
-	defer rows.Close()
+	defer func() { rows.Close() }()
 	if err != nil {
 		return nil, err
 	}
