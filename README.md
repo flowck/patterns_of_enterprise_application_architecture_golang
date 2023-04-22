@@ -2,7 +2,7 @@
 
 [![main](https://github.com/flowck/patterns_of_enterprise_application_architecture_golang/actions/workflows/main.yml/badge.svg)](https://github.com/flowck/patterns_of_enterprise_application_architecture_golang/actions/workflows/main.yml)
 
-This repository has been created with the intent of demonstrating the implementation of some patterns described in
+This repository has been created with the intent of demonstrate the implementation of some patterns described in
 the book "Patterns of Enterprise Application Architecture" by Martin Fowler, D. Rice, M. Foemmel, E. Hieatt, R. Mee, and
 R. Stafford.
 

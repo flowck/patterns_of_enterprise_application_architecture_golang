@@ -9,10 +9,11 @@ import (
 	"time"
 
 	"github.com/brianvoe/gofakeit"
-	"github.com/flowck/patterns_of_enterprise_application_architecture_golang/row_data_gateway"
 	_ "github.com/lib/pq"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+
+	"github.com/flowck/patterns_of_enterprise_application_architecture_golang/row_data_gateway"
 )
 
 var (
@@ -46,18 +47,6 @@ func TestPersonGateway_Update(t *testing.T) {
 	//TODO: improve assertion by querying the newly updated row and the comparing the fields with the row above
 }
 
-func fixturePersonGateway() *row_data_gateway.PersonGateway {
-	createdAtMin := time.Date(2020, 01, 01, 0, 0, 0, 0, time.UTC)
-	return &row_data_gateway.PersonGateway{
-		Id:                 gofakeit.UUID(),
-		FirstName:          gofakeit.FirstName(),
-		LastName:           gofakeit.LastName(),
-		NumberOfDependents: int16(gofakeit.Number(0, 50)),
-		CreatedAt:          gofakeit.DateRange(createdAtMin, time.Now()),
-		UpdatedAt:          time.Now(),
-	}
-}
-
 func TestMain(m *testing.M) {
 	// Random seed data
 	gofakeit.Seed(0)
@@ -77,4 +66,16 @@ func TestMain(m *testing.M) {
 	}
 
 	os.Exit(m.Run())
+}
+
+func fixturePersonGateway() *row_data_gateway.PersonGateway {
+	createdAtMin := time.Date(2020, 01, 01, 0, 0, 0, 0, time.UTC)
+	return &row_data_gateway.PersonGateway{
+		Id:                 gofakeit.UUID(),
+		FirstName:          gofakeit.FirstName(),
+		LastName:           gofakeit.LastName(),
+		NumberOfDependents: int16(gofakeit.Number(0, 50)),
+		CreatedAt:          gofakeit.DateRange(createdAtMin, time.Now()),
+		UpdatedAt:          time.Now(),
+	}
 }
